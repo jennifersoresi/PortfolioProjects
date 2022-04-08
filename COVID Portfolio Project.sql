@@ -1,4 +1,4 @@
--- COVID-19 Data Exploration
+-- COVID Data Exploration
 
 -- Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
 
@@ -127,39 +127,3 @@ Join PortfolioProject.. CovidVaccinations$ vac
 	on dea.location = vac.location
 	and dea.date = vac.date
 Where dea.continent is not null
-
-
--- For Tableau project, Table 1
-
-Select sum(new_cases) as total_cases, sum(cast (new_deaths as int)) as total_deaths, sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage
-From PortfolioProject..CovidDeaths$
-Where continent is not null
-Order by 1, 2
-
--- Table 2
-
-Select location, SUM(cast(new_deaths as int)) as TotalDeathCount
-From PortfolioProject..CovidDeaths$
-Where continent is null
-and location not in ('World', 'European Union', 'International', 'Upper middle income', 'High income', 'Lower middle income', 'Low income')
-Group by location
-Order by TotalDeathCount desc
-
--- Table 3
-
-Select location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as PercentagePopulationInfected
-From PortfolioProject..CovidDeaths$
-Group by location, population
-Order by PercentagePopulationInfected desc
-
--- Table 4
-
-Select location, population, date, MAX(total_cases) as HighestInfectionCount, MAX(total_cases/population)*100 as PercentPopulationInfected
-From PortfolioProject.. CovidDeaths$
-Group by location, population, date
-Order by PercentPopulationInfected desc
-
-
-
-
-
